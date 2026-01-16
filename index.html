@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stord - Shopify US</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white" />
+                        <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <span class="logo-text">Stord</span>
+                </div>
+                <button class="sidebar-toggle">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                                <polyline points="9 22 9 12 15 12 15 22" />
+                            </svg>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                            </svg>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="9 14 4 9 9 4" />
+                                <path d="M20 20v-7a4 4 0 00-4-4H4" />
+                            </svg>
+                            <span>Returns</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="1" y="3" width="15" height="13" />
+                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                                <circle cx="5.5" cy="18.5" r="2.5" />
+                                <circle cx="18.5" cy="18.5" r="2.5" />
+                            </svg>
+                            <span>Shipments</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+                            </svg>
+                            <span>Work orders</span>
+                        </a>
+                    </li>
+                    <li class="nav-item has-submenu">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 7h-9" />
+                                <path d="M14 17H5" />
+                                <circle cx="17" cy="17" r="3" />
+                                <circle cx="7" cy="7" r="3" />
+                            </svg>
+                            <span>Inventory</span>
+                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                                <line x1="8" y1="21" x2="16" y2="21" />
+                                <line x1="12" y1="17" x2="12" y2="21" />
+                            </svg>
+                            <span>Product catalog</span>
+                        </a>
+                    </li>
+                    <li class="nav-item has-submenu">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="2" y1="12" x2="22" y2="12" />
+                                <path
+                                    d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+                            </svg>
+                            <span>Network</span>
+                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10" />
+                                <line x1="12" y1="20" x2="12" y2="4" />
+                                <line x1="6" y1="20" x2="6" y2="14" />
+                            </svg>
+                            <span>Insights</span>
+                        </a>
+                    </li>
+                    <li class="nav-item has-submenu">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                <polyline points="2 17 12 22 22 17" />
+                                <polyline points="2 12 12 17 22 12" />
+                            </svg>
+                            <span>Automation</span>
+                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="nav-item has-submenu expanded">
+                        <a href="#" class="nav-link active">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                                <path d="M16 3.13a4 4 0 010 7.75" />
+                            </svg>
+                            <span>Consumer experience</span>
+                            <svg class="chevron rotated" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </a>
+                        <ul class="submenu">
+                            <li class="submenu-item active">
+                                <a href="#">Pre-purchase</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="#">Email alerts</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="#">Tracking portals</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="#">Shipment protection</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item has-submenu">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+                                <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                            </svg>
+                            <span>Connections</span>
+                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="nav-item has-submenu">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="1" y="3" width="15" height="13" />
+                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                                <circle cx="5.5" cy="18.5" r="2.5" />
+                                <circle cx="18.5" cy="18.5" r="2.5" />
+                            </svg>
+                            <span>Freight</span>
+                            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                <polyline points="2 17 12 22 22 17" />
+                                <polyline points="2 12 12 17 22 12" />
+                            </svg>
+                            <span>Stord Collective</span>
+                        </a>
+                    </li>
+                    <li class="nav-item referral">
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                            <span>Referral program</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">Shopify US</h1>
+            </header>
+
+            <!-- Storefront Details Card -->
+            <section class="card storefront-details">
+                <div class="card-header">
+                    <h2 class="card-title">Storefront details</h2>
+                    <button class="edit-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="details-grid">
+                    <div class="detail-row">
+                        <span class="detail-label">Primary contact</span>
+                        <span class="detail-value">Ryan A</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Contact phone</span>
+                        <span class="detail-value">(833) 700-2025</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Contact email</span>
+                        <span class="detail-value">product@stord.com</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Product Page Delivery Estimates -->
+            <section class="card delivery-estimates">
+                <div class="card-header">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="3" width="15" height="13" />
+                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                                <circle cx="5.5" cy="18.5" r="2.5" />
+                                <circle cx="18.5" cy="18.5" r="2.5" />
+                            </svg>
+                        </div>
+                        <div class="header-text">
+                            <div class="title-row">
+                                <h3>Product page delivery estimates</h3>
+                                <span class="badge active">ACTIVE</span>
+                            </div>
+                            <p class="description">Give estimated delivery dates for each shipping option on your
+                                storefront's detail page.</p>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <button class="edit-btn small">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                            </svg>
+                        </button>
+                        <label class="toggle">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="sku-section">
+                    <div class="sku-row">
+                        <div class="sku-left">
+                            <span class="sku-label">Enabled SKUs</span>
+                            <span class="sku-sublabel">Specify products to display the delivery estimate.</span>
+                        </div>
+                        <span class="sku-value">All SKUs</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Default Ship Options -->
+            <section class="card ship-options">
+                <div class="card-header">
+                    <div class="header-left">
+                        <div class="icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                                <line x1="3" y1="6" x2="21" y2="6" />
+                                <path d="M16 10a4 4 0 01-8 0" />
+                            </svg>
+                        </div>
+                        <div class="header-text">
+                            <h3>Default ship options</h3>
+                            <p class="description">Provide shipping options to consumers for faster or cheaper delivery.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <button class="download-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="ship-options-table">
+                    <div class="table-header-row">
+                        <span class="table-label">Ship options</span>
+                        <button class="add-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <table class="options-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Shipping cost</th>
+                                <th>Cart value</th>
+                                <th>Buffer days</th>
+                                <th>Max. estimate</th>
+                                <th>Shipment protection</th>
+                                <th>Service level speed mapping</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Premium Express</td>
+                                <td>$15.00</td>
+                                <td>$50.00+</td>
+                                <td>1 day</td>
+                                <td>4 days</td>
+                                <td>Yes</td>
+                                <td>Stord Second Day</td>
+                                <td>
+                                    <button class="more-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="1" />
+                                            <circle cx="12" cy="5" r="1" />
+                                            <circle cx="12" cy="19" r="1" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Express</td>
+                                <td>$9.00</td>
+                                <td>&lt; $50.00</td>
+                                <td>1 day</td>
+                                <td>4 days</td>
+                                <td>Yes</td>
+                                <td>Stord Second Day</td>
+                                <td>
+                                    <button class="more-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="1" />
+                                            <circle cx="12" cy="5" r="1" />
+                                            <circle cx="12" cy="19" r="1" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Standard</td>
+                                <td>$5.00</td>
+                                <td>&lt; $50.00</td>
+                                <td>1 day</td>
+                                <td>6 days</td>
+                                <td>Yes</td>
+                                <td>Stord Economy</td>
+                                <td>
+                                    <button class="more-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="1" />
+                                            <circle cx="12" cy="5" r="1" />
+                                            <circle cx="12" cy="19" r="1" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Free Shipping</td>
+                                <td>$0.00</td>
+                                <td>$50.00+</td>
+                                <td>1 day</td>
+                                <td>8 days</td>
+                                <td>No</td>
+                                <td>Stord Economy</td>
+                                <td>
+                                    <button class="more-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="1" />
+                                            <circle cx="12" cy="5" r="1" />
+                                            <circle cx="12" cy="19" r="1" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Ship Option Modal -->
+    <div class="modal-overlay" id="addShipOptionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Add ship option</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Name and Shipping Cost Row -->
+                <div class="form-row two-col">
+                    <div class="form-group">
+                        <label class="form-label">Name <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Shipping cost <span class="required">*</span></label>
+                        <div class="input-with-prefix" id="shippingCostWrapper">
+                            <span class="input-prefix">$</span>
+                            <input type="text" class="form-input with-prefix" id="shippingCostInput" value="0.00">
+                        </div>
+                        <!-- Rate Card Toggle - directly under shipping cost -->
+                        <label class="inline-toggle field-toggle">
+                            <span class="toggle-label">Base shipping cost on rate card</span>
+                            <span class="toggle">
+                                <input type="checkbox" id="rateCardToggle">
+                                <span class="toggle-slider"></span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Rate Card Settings (hidden by default) -->
+                <div class="rate-card-settings" id="rateCardSettings">
+                    <div class="form-group">
+                        <label class="form-label">Shipping rate mark up</label>
+                        <div class="input-with-toggle compact-input">
+                            <div class="toggle-buttons" id="markupToggle">
+                                <button type="button" class="toggle-btn active" data-type="percent">%</button>
+                                <button type="button" class="toggle-btn" data-type="dollar">$</button>
+                            </div>
+                            <input type="text" class="form-input" id="markupInput" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Round up to nearest</label>
+                        <div class="select-wrapper compact-input">
+                            <select class="form-select">
+                                <option>$.00</option>
+                                <option>$.95</option>
+                                <option>$.99</option>
+                            </select>
+                            <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Max shipping cost</label>
+                        <div class="input-with-prefix compact-input">
+                            <span class="input-prefix">$</span>
+                            <input type="text" class="form-input with-prefix" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Minimum shipping cost</label>
+                        <div class="input-with-prefix compact-input">
+                            <span class="input-prefix">$</span>
+                            <input type="text" class="form-input with-prefix" placeholder="">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Value Conditions -->
+                <div class="form-section">
+                    <h3 class="section-title">Cart value conditions</h3>
+                    <p class="section-description">Display this ship option based on order value (optional).</p>
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label class="form-label">From</label>
+                            <div class="input-with-prefix">
+                                <span class="input-prefix">$</span>
+                                <input type="text" class="form-input with-prefix" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">To</label>
+                            <div class="input-with-prefix">
+                                <span class="input-prefix">$</span>
+                                <input type="text" class="form-input with-prefix" value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Speed -->
+                <div class="form-section">
+                    <h3 class="section-title">Delivery speed</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">Buffer days <span class="required">*</span></label>
+                        <input type="text" class="form-input small-input" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Maximum delivery estimate</label>
+                        <input type="text" class="form-input small-input" value="0">
+                        <p class="form-hint">If the calculated delivery is beyond this number of days, the estimate will
+                            be hidden.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Service level speed mapping</label>
+                        <div class="select-wrapper">
+                            <select class="form-select">
+                                <option>Stord Standard</option>
+                                <option>Stord Second Day</option>
+                                <option>Stord Economy</option>
+                            </select>
+                            <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </div>
+                        <p class="form-hint">The service level speed mapping dictates the typical delivery "speed" that
+                            will be used in calculating the EDD. It DOES NOT mean that service level will necessarily be
+                            used for delivery. This allows you to offer different shipping options at checkout with
+                            earlier or further out estimated delivery dates.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Max delivery estimate fallback text</label>
+                        <input type="text" class="form-input" placeholder="">
+                        <p class="form-hint">This text displays when the calculated estimate is beyond the max
+                            configured for this ship option. If no fallback text is set, only the shipping option name
+                            is shown at checkout.</p>
+                    </div>
+                </div>
+
+                <!-- Shipment Protection -->
+                <div class="form-section">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" class="form-checkbox">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Enable shipment protection by Stord</span>
+                    </label>
+                    <p class="form-hint checkbox-hint">Protects both the seller and the buyer in case of damage, loss,
+                        or theft of the shipped items during transit.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById('addShipOptionModal');
+        const addBtn = document.querySelector('.add-btn');
+
+        addBtn.addEventListener('click', function () {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on overlay click
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Rate Card Toggle functionality
+        const rateCardToggle = document.getElementById('rateCardToggle');
+        const shippingCostWrapper = document.getElementById('shippingCostWrapper');
+        const shippingCostInput = document.getElementById('shippingCostInput');
+        const rateCardSettings = document.getElementById('rateCardSettings');
+
+        rateCardToggle.addEventListener('change', function () {
+            if (this.checked) {
+                // Enable rate card mode - gray out shipping cost, show settings
+                shippingCostWrapper.classList.add('disabled');
+                shippingCostInput.disabled = true;
+                rateCardSettings.classList.add('visible');
+            } else {
+                // Disable rate card mode - enable shipping cost, hide settings
+                shippingCostWrapper.classList.remove('disabled');
+                shippingCostInput.disabled = false;
+                rateCardSettings.classList.remove('visible');
+            }
+        });
+
+        // Markup Toggle (% / $) functionality
+        const markupToggle = document.getElementById('markupToggle');
+        const toggleBtns = markupToggle.querySelectorAll('.toggle-btn');
+
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Remove active from all buttons
+                toggleBtns.forEach(b => b.classList.remove('active'));
+                // Add active to clicked button
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
