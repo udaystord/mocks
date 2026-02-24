@@ -1,0 +1,2318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stord – Customer Detail</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a2e;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ── Layout ── */
+    .app {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 200px;
+      background: #1a1a2e;
+      color: #a0a0b8;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      padding: 20px 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-logo svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .sidebar-logo span {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+
+    .nav-section {
+      padding: 0 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #a0a0b8;
+      transition: background 0.15s, color 0.15s;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #d0d0e0;
+    }
+
+    .nav-item.active {
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+    }
+
+    .nav-item svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .nav-item.active svg {
+      opacity: 1;
+    }
+
+    .nav-spacer {
+      flex: 1;
+    }
+
+    .nav-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 8px 16px;
+    }
+
+    .sidebar-user {
+      padding: 12px 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #6366f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .sidebar-user-info {
+      line-height: 1.3;
+    }
+
+    .sidebar-user-name {
+      font-size: 12px;
+      color: #e0e0f0;
+      font-weight: 500;
+    }
+
+    .sidebar-user-org {
+      font-size: 11px;
+      color: #707090;
+    }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      background: #fff;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      padding: 16px 32px 0;
+      font-size: 12px;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .breadcrumb a {
+      color: #888;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      color: #6366f1;
+    }
+
+    .breadcrumb .sep {
+      color: #ccc;
+    }
+
+    /* Header */
+    .page-header {
+      padding: 8px 32px 0;
+    }
+
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: -0.4px;
+      margin-bottom: 16px;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {}
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0 32px;
+    }
+
+    .tab {
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #888;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s;
+    }
+
+    .tab:hover {
+      color: #333;
+    }
+
+    .tab.active {
+      color: #111;
+      border-bottom-color: #6366f1;
+    }
+
+    /* Content area with right sidebar */
+    .content-area {
+      display: flex;
+      padding: 0;
+    }
+
+    /* ── Activity Feed ── */
+    .activity-panel {
+      flex: 1;
+      padding: 20px 32px;
+      min-width: 0;
+      transition: margin-right 0.25s ease;
+    }
+
+    .activity-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .activity-header h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 12px;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .filter-btn:hover {
+      border-color: #bbb;
+    }
+
+    .filter-btn.active {
+      border-color: #6366f1;
+      color: #6366f1;
+      background: #f5f3ff;
+    }
+
+    .filter-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Filter active count badge */
+    .filter-count {
+      background: #6366f1;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 0 6px;
+      border-radius: 10px;
+      min-width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 2px;
+    }
+
+    /* ══════════════════════════════════════════════
+     FILTER SIDE PANE — slides in from the right
+     ══════════════════════════════════════════════ */
+    .filter-side-pane {
+      width: 0;
+      min-width: 0;
+      overflow: hidden;
+      border-left: 0px solid #e5e7eb;
+      background: #fff;
+      flex-shrink: 0;
+      transition: width 0.25s ease, min-width 0.25s ease, border-left-width 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 140px);
+      z-index: 100;
+    }
+
+    .filter-side-pane.open {
+      width: 320px;
+      min-width: 320px;
+      border-left-width: 1px;
+    }
+
+    .filter-side-pane-inner {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    /* Pane header */
+    .filter-pane-header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #f0f0f0;
+      flex-shrink: 0;
+    }
+
+    .filter-pane-header h3 {
+      font-size: 15px;
+      font-weight: 500;
+      color: #111;
+    }
+
+    .filter-pane-close {
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      transition: color 0.12s;
+    }
+
+    .filter-pane-close:hover {
+      color: #333;
+    }
+
+    .filter-pane-close svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Pane body */
+    .filter-pane-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    /* Filter sections */
+    .filter-field {
+      margin-bottom: 20px;
+    }
+
+    .filter-field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    /* Dropdown-like select for Event Type */
+    .filter-select-wrapper {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .filter-select-trigger {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      font-size: 13px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #1a1a2e;
+    }
+
+    .filter-select-trigger svg {
+      width: 12px;
+      height: 12px;
+      color: #94a3b8;
+      transition: transform 0.2s;
+    }
+
+    .filter-select-wrapper.active .filter-select-trigger svg {
+      transform: rotate(180deg);
+    }
+
+    /* Fake dropdown list */
+    .filter-dropdown-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      margin-top: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      display: none;
+      z-index: 10;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 4px 0;
+    }
+
+    .filter-select-wrapper.active .filter-dropdown-list {
+      display: block;
+    }
+
+    .filter-dropdown-item {
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-dropdown-item:hover {
+      background: #f8f9fa;
+    }
+
+    .filter-dropdown-section-header {
+      padding: 12px 14px 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #707070;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-top: 1px solid #eee;
+      margin-top: 4px;
+    }
+
+    .filter-dropdown-list>.filter-dropdown-section-header:first-of-type {
+      border-top: none;
+      margin-top: 0;
+    }
+
+    .filter-multi-checkbox {
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .filter-dropdown-item.selected .filter-multi-checkbox {
+      background: #6366f1;
+      border-color: #6366f1;
+    }
+
+    .filter-multi-checkbox svg {
+      width: 10px;
+      height: 10px;
+      color: #fff;
+      display: none;
+    }
+
+    .filter-dropdown-item.selected .filter-multi-checkbox svg {
+      display: block;
+    }
+
+    /* Date Range styling */
+    .filter-date-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .date-box {
+      flex: 1;
+      position: relative;
+    }
+
+    .date-box input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: inherit;
+      color: #333;
+      outline: none;
+    }
+
+    .date-box input:focus {
+      border-color: #6366f1;
+    }
+
+    .date-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    .date-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Pane footer */
+    .filter-pane-footer {
+      padding: 16px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .btn-clear-link {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-clear-link:hover {
+      color: #334155;
+    }
+
+    /* Day Group */
+    .day-group {
+      margin-bottom: 4px;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+      font-size: 11px;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .day-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #eee;
+    }
+
+    /* Timeline items */
+    .timeline {
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: #e5e7eb;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      position: relative;
+    }
+
+    .timeline-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .icon-browse {
+      background: #f0f0f5;
+      color: #888;
+    }
+
+    .icon-cart {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .icon-checkout {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .icon-order {
+      background: #dbeafe;
+      color: #2563eb;
+    }
+
+    .icon-email {
+      background: #ede9fe;
+      color: #7c3aed;
+    }
+
+    .icon-email-shipped {
+      background: #ede9fe;
+      color: #7c3aed;
+    }
+
+    .icon-email-ofd {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .icon-email-delivered {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .icon-automation {
+      background: #fce7f3;
+      color: #db2777;
+    }
+
+    .icon-shipment-created {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .icon-shipment-dispatched {
+      background: #dbeafe;
+      color: #3b82f6;
+    }
+
+    .icon-shipment-delivered {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .icon-backorder {
+      background: #fef9c3;
+      color: #ca8a04;
+    }
+
+    .icon-reprocessed {
+      background: #fce7f3;
+      color: #be185d;
+    }
+
+    .timeline-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .timeline-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 2px;
+    }
+
+    .timeline-desc {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 3px;
+    }
+
+    .timeline-meta {
+      font-size: 11px;
+      color: #aaa;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .timeline-source {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .timeline-source .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #94d82d;
+    }
+
+    /* Tracking link */
+    .tracking-link {
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 12px;
+    }
+
+    .tracking-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Order ID link */
+    .order-link {
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .order-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Status badge */
+    .status-badge {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    .status-open {
+      background: #dbeafe;
+      color: #2563eb;
+    }
+
+    .status-on-hold {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .status-delivered {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    /* ── Collapsed Browse Group ── */
+    .browse-group {
+      position: relative;
+    }
+
+    .browse-group-header {
+      display: flex;
+      gap: 14px;
+      padding: 10px 0;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      border-radius: 8px;
+      transition: background 0.12s;
+    }
+
+    .browse-group-header:hover {
+      background: #fafafa;
+    }
+
+    .browse-group-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #f0f0f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      color: #888;
+    }
+
+    .browse-group-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .browse-group-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .browse-group-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .browse-group-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .browse-group-title span {
+      background: #eef0f4;
+      color: #555;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: 10px;
+      margin-left: 8px;
+    }
+
+    .browse-group-chevron {
+      width: 18px;
+      height: 18px;
+      color: #999;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .browse-group.open .browse-group-chevron {
+      transform: rotate(180deg);
+    }
+
+    .browse-group-summary {
+      font-size: 12px;
+      color: #999;
+      margin-top: 2px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .browse-group-summary .tag {
+      background: #f5f5f8;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #777;
+    }
+
+    .browse-group-meta {
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .browse-group-expanded {
+      display: none;
+      padding: 4px 0 4px 44px;
+    }
+
+    .browse-group.open .browse-group-expanded {
+      display: block;
+    }
+
+    .browse-sub-item {
+      padding: 8px 12px;
+      border-left: 2px solid #e5e7eb;
+      margin-bottom: 4px;
+      transition: border-color 0.15s;
+    }
+
+    .browse-sub-item:hover {
+      border-left-color: #6366f1;
+      background: #fafaff;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .browse-sub-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .browse-sub-desc {
+      font-size: 11px;
+      color: #999;
+      margin-top: 1px;
+    }
+
+    /* ── Shipment Group (collapsible, same pattern) ── */
+    .shipment-group-base-icon {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    /* ── Right Sidebar ── */
+    .details-panel {
+      width: 280px;
+      border-left: 1px solid #e5e7eb;
+      padding: 20px;
+      flex-shrink: 0;
+      overflow-y: auto;
+      height: calc(100vh - 140px);
+    }
+
+    .details-panel h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .details-panel h3 svg {
+      width: 16px;
+      height: 16px;
+      color: #888;
+    }
+
+    .detail-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #111;
+      margin-bottom: 2px;
+    }
+
+    .detail-subname {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 12px;
+    }
+
+    .detail-link {
+      font-size: 12px;
+      color: #6366f1;
+      cursor: pointer;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 12px;
+      color: #444;
+    }
+
+    .detail-row svg {
+      width: 15px;
+      height: 15px;
+      color: #999;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .detail-row a {
+      color: #6366f1;
+      text-decoration: none;
+    }
+
+    .detail-row a:hover {
+      text-decoration: underline;
+    }
+
+    .detail-divider {
+      height: 1px;
+      background: #eee;
+      margin: 16px 0;
+    }
+
+    /* Purchased products */
+    .product-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .product-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+    }
+
+    .product-thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .product-info {
+      min-width: 0;
+    }
+
+    .product-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .product-sku {
+      font-size: 11px;
+      color: #6366f1;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .browse-group.open .browse-sub-item {
+      animation: fadeIn 0.2s ease;
+    }
+
+    /* Tooltip-style count badge on collapsed icon */
+    .stacked-icons {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .stacked-icons .base-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #f0f0f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+    }
+
+    .stacked-icons .base-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .stacked-icons .count-badge {
+      position: absolute;
+      top: -4px;
+      right: -6px;
+      background: #6366f1;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #fff;
+    }
+
+    /* ── Pagination ── */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-top: 1px solid #eee;
+      margin-top: 8px;
+    }
+
+    .pagination-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #888;
+    }
+
+    .pagination-left select {
+      padding: 4px 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #555;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .pagination-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .pagination-btn {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #666;
+      transition: border-color 0.15s;
+    }
+
+    .pagination-btn:hover {
+      border-color: #999;
+    }
+
+    .pagination-btn.disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .pagination-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+    <!-- ════ SIDEBAR ════ -->
+    <nav class="sidebar">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="18" height="18" rx="4" stroke="#6366f1" stroke-width="2" />
+          <path d="M8 12h8M12 8v8" stroke="#6366f1" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <span>Stord</span>
+      </div>
+      <div class="nav-section">
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M3 12l9-9 9 9" />
+            <path d="M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" />
+          </svg>
+          Home
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="M2 10h20" />
+          </svg>
+          Orders
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M20 7l-8-4-8 4m16 0v10l-8 4m8-14l-8 4m0 0L4 7v10l8 4" />
+          </svg>
+          Inventory
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path
+              d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+          </svg>
+          Products
+        </a>
+        <a class="nav-item active" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 00-3-3.87" />
+            <path d="M16 3.13a4 4 0 010 7.75" />
+          </svg>
+          Customers
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+          </svg>
+          Network
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M21 12a9 9 0 11-6.219-8.56" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+          Insights
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path
+              d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+          </svg>
+          Automations
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path
+              d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+          </svg>
+          Tools
+        </a>
+      </div>
+
+      <div class="nav-spacer"></div>
+      <div class="nav-divider"></div>
+      <div class="nav-section" style="padding-bottom:8px">
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          Support
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+          </svg>
+          Settings
+        </a>
+      </div>
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">CW</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Christoph Winston</div>
+          <div class="sidebar-user-org">Acme Corp.</div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ════ MAIN CONTENT ════ -->
+    <div class="main">
+      <div class="breadcrumb">
+        <a href="#">Customers</a>
+        <span class="sep">›</span>
+        <span>Armando Christian Perez</span>
+      </div>
+
+      <div class="page-header">
+        <h1>Armando Christian Perez</h1>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-value">14</div>
+            <div class="stat-label">Total orders</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" style="color:#6366f1">2</div>
+            <div class="stat-label">Open orders</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active">Activity</div>
+        <div class="tab">Orders</div>
+        <div class="tab">Insights</div>
+      </div>
+
+      <div class="content-area">
+        <!-- ── Activity Panel ── -->
+        <div class="activity-panel" id="activityPanel">
+          <div class="activity-header">
+            <h2>Customer Activity</h2>
+            <div class="filter-bar">
+              <button class="filter-btn" id="filterToggleBtn" onclick="toggleFilterPane()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                </svg>
+                Filters
+                <span class="filter-count" id="filterCountBadge" style="display:none">0</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ═══ Oct 1, 2025 ═══ -->
+          <div class="day-group" data-date="2025-10-01">
+            <div class="day-header">October 1, 2025</div>
+            <div class="timeline">
+
+              <!-- Order Delivered Email Sent -->
+              <div class="timeline-item" data-event-type="email_delivered" data-event-date="2025-10-01">
+                <div class="timeline-icon icon-email-delivered">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Order Delivered Email Sent <a href="#" class="order-link">PL791568</a>
+                  </div>
+                  <div class="timeline-desc">Consumer alert sent<br>Email: pavlinamail.1@gmail.com</div>
+                  <div class="timeline-meta">
+                    <span>Oct 1, 2025, 3:35 PM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shipment Delivered -->
+              <div class="timeline-item" data-event-type="shipment_delivered" data-event-date="2025-10-01">
+                <div class="timeline-icon icon-shipment-delivered">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Shipment Delivered <a href="#" class="order-link">PL791568</a></div>
+                  <div class="timeline-desc">A shipment has been delivered for the order<br>Carrier:
+                    bettertrucks<br>Tracking: <a href="#" class="tracking-link">BTP_0337090JGTP</a></div>
+                  <div class="timeline-meta">
+                    <span>Oct 1, 2025, 2:52 PM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Out For Delivery Email Sent -->
+              <div class="timeline-item" data-event-type="email_ofd" data-event-date="2025-10-01">
+                <div class="timeline-icon icon-email-ofd">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Out For Delivery Email Sent <a href="#" class="order-link">PL791568</a>
+                  </div>
+                  <div class="timeline-desc">Consumer alert sent<br>Email: pavlinamail.1@gmail.com</div>
+                  <div class="timeline-meta">
+                    <span>Oct 1, 2025, 11:59 AM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ═══ Sep 29, 2025 ═══ -->
+          <div class="day-group" data-date="2025-09-29">
+            <div class="day-header">September 29, 2025</div>
+            <div class="timeline">
+              <!-- Web Browsing Activity Group (collapsible) -->
+              <div class="browse-group" id="web-browsing-sep29" data-event-type="web_browsing"
+                data-event-date="2025-09-29" onclick="toggleGroup('web-browsing-sep29')">
+                <div class="browse-group-header">
+                  <div class="stacked-icons">
+                    <div class="base-icon web-group-base-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path
+                          d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                      </svg>
+                    </div>
+                    <div class="count-badge">5</div>
+                  </div>
+                  <div class="browse-group-content">
+                    <div class="browse-group-top">
+                      <div class="browse-group-title">
+                        Web Browsing Activity
+                        <span>5 events</span>
+                      </div>
+                      <svg class="browse-group-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </div>
+                    <div class="browse-group-summary">
+                      <span class="tag">3 pages viewed</span>
+                      <span class="tag">1 product viewed</span>
+                      <span class="tag">1 collection viewed</span>
+                    </div>
+                    <div class="browse-group-meta">
+                      <span>2:19 PM — 2:31 PM EST</span>
+                      <span class="browser-dot" style="background:#4ade80"></span> Shopify web pixel
+                    </div>
+                  </div>
+                </div>
+                <div class="browse-group-expanded">
+                  <div class="browse-sub-item">
+                    <div class="browse-sub-title">Page viewed</div>
+                    <div class="browse-sub-desc">Viewed page 3 times · 2:31 PM EST</div>
+                  </div>
+                  <div class="browse-sub-item">
+                    <div class="browse-sub-title">Product viewed</div>
+                    <div class="browse-sub-desc">Viewed product x5 of x51 3 times · 2:28 PM EST</div>
+                  </div>
+                  <div class="browse-sub-item">
+                    <div class="browse-sub-title">Collection viewed</div>
+                    <div class="browse-sub-desc">Viewed collection id 6191721 · 2:25 PM EST</div>
+                  </div>
+                  <div class="browse-sub-item">
+                    <div class="browse-sub-title">Cart viewed</div>
+                    <div class="browse-sub-desc">Viewed cart 2 times · 2:22 PM EST</div>
+                  </div>
+                  <div class="browse-sub-item">
+                    <div class="browse-sub-title">Added to cart</div>
+                    <div class="browse-sub-desc">Added product id 85 to cart · 2:19 PM EST</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Checkout started -->
+              <div class="timeline-item" data-event-type="checkout_started" data-event-date="2025-09-29">
+                <div class="timeline-icon icon-checkout">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Checkout Started</div>
+                  <div class="timeline-desc">Initial checkout process initiated</div>
+                  <div class="timeline-meta">
+                    <span>Sep 29, 2025, 2:15 PM EST</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Checkout completed -->
+              <div class="timeline-item" data-event-type="checkout_completed" data-event-date="2025-09-29">
+                <div class="timeline-icon icon-checkout-completed">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <polyline points="9 11 12 14 22 4" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Checkout Completed</div>
+                  <div class="timeline-desc">Checkout finalized successfully</div>
+                  <div class="timeline-meta">
+                    <span>Sep 29, 2025, 2:19 PM EST</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Order Placed -->
+              <div class="timeline-item" data-event-type="order_placed" data-event-date="2025-09-29">
+                <div class="timeline-icon icon-order">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="M2 10h20" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Order Placed <a href="#" class="order-link">PL791568</a></div>
+                  <div class="timeline-desc">Order created</div>
+                  <div class="timeline-meta">
+                    <span>Sep 29, 2025, 2:19 PM EST</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Automation -->
+
+            </div>
+          </div>
+
+          <!-- ═══ Sep 26, 2025 ═══ -->
+          <div class="day-group" data-date="2025-09-26">
+            <div class="day-header">September 26, 2025</div>
+            <div class="timeline">
+
+              <!-- Shipment Lifecycle Group (collapsible) -->
+              <!-- Order Shipped Email Sent -->
+              <div class="timeline-item" data-event-type="email_shipped" data-event-date="2025-09-26">
+                <div class="timeline-icon icon-email-shipped">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Order Shipped Email Sent <a href="#" class="order-link">PL791568</a></div>
+                  <div class="timeline-desc">Consumer alert sent · Email: pavlinamail.1@gmail.com</div>
+                  <div class="timeline-meta">
+                    <span>Sep 26, 2025, 7:23 PM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shipment Dispatched -->
+              <div class="timeline-item" data-event-type="shipment_dispatched" data-event-date="2025-09-26">
+                <div class="timeline-icon icon-shipment-dispatched">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <rect x="1" y="3" width="15" height="13" />
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                    <circle cx="5.5" cy="18.5" r="2.5" />
+                    <circle cx="18.5" cy="18.5" r="2.5" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Shipment Dispatched <a href="#" class="order-link">PL791568</a></div>
+                  <div class="timeline-desc">Carrier: bettertrucks · Tracking: <a href="#"
+                      class="tracking-link">BTP_0337090JGTP</a> · Service: better-trucks-express-service-method</div>
+                  <div class="timeline-meta">
+                    <span>Sep 26, 2025, 7:23 PM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shipment Created -->
+              <div class="timeline-item" data-event-type="shipment_created" data-event-date="2025-09-26">
+                <div class="timeline-icon icon-shipment-created">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path
+                      d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                    <line x1="12" y1="22.08" x2="12" y2="12" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Shipment Created <a href="#" class="order-link">PL791568</a></div>
+                  <div class="timeline-desc">Carrier: bettertrucks · Tracking: <a href="#"
+                      class="tracking-link">BTP_0337090JGTP</a></div>
+                  <div class="timeline-meta">
+                    <span>Sep 26, 2025, 7:23 PM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- ═══ Aug 27, 2025 ═══ -->
+          <div class="day-group" data-date="2025-08-27">
+            <div class="day-header">August 27, 2025</div>
+            <div class="timeline">
+
+              <!-- Shipment Delivered (standalone, for older order) -->
+              <div class="timeline-item" data-event-type="shipment_delivered" data-event-date="2025-08-27">
+                <div class="timeline-icon icon-shipment-delivered">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Shipment Delivered <a href="#" class="order-link">PL748462</a></div>
+                  <div class="timeline-desc">A shipment has been delivered for the order<br>Carrier:
+                    bettertrucks<br>Tracking: <a href="#" class="tracking-link">BTP_03370R5MRWI</a></div>
+                  <div class="timeline-meta">
+                    <span>Aug 27, 2025, 4:14 PM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Out For Delivery Email Sent -->
+              <div class="timeline-item" data-event-type="email_ofd" data-event-date="2025-08-27">
+                <div class="timeline-icon icon-email-ofd">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Out For Delivery Email Sent <a href="#" class="order-link">PL748462</a>
+                  </div>
+                  <div class="timeline-desc">Consumer alert sent<br>Email: pavlinamail.1@gmail.com</div>
+                  <div class="timeline-meta">
+                    <span>Aug 27, 2025, 11:20 AM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ═══ Aug 26, 2025 ═══ -->
+          <div class="day-group" data-date="2025-08-26">
+            <div class="day-header">August 26, 2025</div>
+            <div class="timeline">
+
+              <!-- Shipment lifecycle group for PL748462 -->
+              <!-- Order Shipped Email Sent -->
+              <div class="timeline-item" data-event-type="email_shipped" data-event-date="2025-08-26">
+                <div class="timeline-icon icon-email-shipped">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Order Shipped Email Sent <a href="#" class="order-link">PL748462</a></div>
+                  <div class="timeline-desc">Consumer alert sent · Email: pavlinamail.1@gmail.com</div>
+                  <div class="timeline-meta">
+                    <span>Aug 26, 2025, 5:48 PM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shipment Dispatched -->
+              <div class="timeline-item" data-event-type="shipment_dispatched" data-event-date="2025-08-26">
+                <div class="timeline-icon icon-shipment-dispatched">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <rect x="1" y="3" width="15" height="13" />
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                    <circle cx="5.5" cy="18.5" r="2.5" />
+                    <circle cx="18.5" cy="18.5" r="2.5" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Shipment Dispatched <a href="#" class="order-link">PL748462</a></div>
+                  <div class="timeline-desc">Carrier: bettertrucks · Tracking: <a href="#"
+                      class="tracking-link">BTP_03370R5MRWI</a> · Service: better-trucks-express-service-method</div>
+                  <div class="timeline-meta">
+                    <span>Aug 26, 2025, 5:48 PM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shipment Created -->
+              <div class="timeline-item" data-event-type="shipment_created" data-event-date="2025-08-26">
+                <div class="timeline-icon icon-shipment-created">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path
+                      d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                    <line x1="12" y1="22.08" x2="12" y2="12" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Shipment Created <a href="#" class="order-link">PL748462</a></div>
+                  <div class="timeline-desc">A shipment has been created for the order · Carrier: bettertrucks ·
+                    Tracking: <a href="#" class="tracking-link">BTP_03370R5MRWI</a></div>
+                  <div class="timeline-meta">
+                    <span>Aug 26, 2025, 5:48 PM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Backorder Released -->
+              <div class="timeline-item" data-event-type="backorder_released" data-event-date="2025-08-26">
+                <div class="timeline-icon icon-backorder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path d="M12 8v4l3 3" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Backorder Released <a href="#" class="order-link">PL748462</a></div>
+                  <div class="timeline-desc">Backorder released</div>
+                  <div class="timeline-meta">
+                    <span>Aug 26, 2025, 6:33 AM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ═══ Aug 25, 2025 ═══ -->
+          <div class="day-group" data-date="2025-08-25">
+            <div class="day-header">August 25, 2025</div>
+            <div class="timeline">
+
+              <!-- Order Placed -->
+              <div class="timeline-item" data-event-type="order_placed" data-event-date="2025-08-25">
+                <div class="timeline-icon icon-order">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="M2 10h20" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Order Placed <a href="#" class="order-link">PL748462</a></div>
+                  <div class="timeline-desc">Order created</div>
+                  <div class="timeline-meta">
+                    <span>Aug 25, 2025, 12:10 AM CDT</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ═══ Aug 20, 2025 ═══ -->
+          <div class="day-group" data-date="2025-08-20">
+            <div class="day-header">August 20, 2025</div>
+            <div class="timeline">
+
+              <!-- Order Reprocessed -->
+              <div class="timeline-item" data-event-type="order_reprocessed" data-event-date="2025-08-20">
+                <div class="timeline-icon icon-reprocessed">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <polyline points="23 4 23 10 17 10" />
+                    <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Order Reprocessed <a href="#" class="order-link">PL1005737</a></div>
+                  <div class="timeline-desc">Order hold released</div>
+                  <div class="timeline-meta">
+                    <span>Aug 20, 2025, 12:28 PM CST</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Order Placed (On Hold) -->
+              <div class="timeline-item" data-event-type="order_placed" data-event-date="2025-08-20">
+                <div class="timeline-icon icon-order">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="M2 10h20" />
+                  </svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Order Placed <a href="#" class="order-link">PL1005737</a></div>
+                  <div class="timeline-desc">Order created</div>
+                  <div class="timeline-meta">
+                    <span>Aug 20, 2025, 12:09 PM CST</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ═══ Pagination ═══ -->
+          <div class="pagination">
+            <div class="pagination-left">
+              <select>
+                <option>25 per page</option>
+                <option>50 per page</option>
+                <option>100 per page</option>
+              </select>
+            </div>
+            <div class="pagination-right">
+              <span>1–25 of 39 events</span>
+              <button class="pagination-btn disabled">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
+              <button class="pagination-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ══════════════════════════════════════
+           FILTER SIDE PANE (between activity & details)
+           ══════════════════════════════════════ -->
+        <div class="filter-side-pane" id="filterSidePane">
+          <div class="filter-side-pane-inner">
+            <div class="filter-pane-header">
+              <h3>Filters</h3>
+              <button class="filter-pane-close" onclick="toggleFilterPane()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="filter-pane-body">
+              <!-- Event Type Multi-select Dropdown -->
+              <div class="filter-field">
+                <label class="filter-field-label">Event Type</label>
+                <div class="filter-select-wrapper" id="eventTypeSelect">
+                  <div class="filter-select-trigger" onclick="toggleEventTypeDropdown()">
+                    <span id="selectedEventTypeLabel">All Events</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </div>
+                  <div class="filter-dropdown-list">
+                    <div class="filter-dropdown-item selected" data-filter="all" onclick="selectEventType('all')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      All Events
+                    </div>
+
+                    <div class="filter-dropdown-section-header">OMS Events</div>
+                    <div class="filter-dropdown-item" data-filter="order_placed"
+                      onclick="selectEventType('order_placed')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Order Placed
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="order_reprocessed"
+                      onclick="selectEventType('order_reprocessed')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Order Reprocessed
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="backorder_released"
+                      onclick="selectEventType('backorder_released')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Backorder Released
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="shipment_created"
+                      onclick="selectEventType('shipment_created')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Shipment Created
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="shipment_dispatched"
+                      onclick="selectEventType('shipment_dispatched')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Shipment Dispatched
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="email_shipped"
+                      onclick="selectEventType('email_shipped')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Order Shipped Email
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="email_ofd" onclick="selectEventType('email_ofd')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Out For Delivery Email
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="shipment_delivered"
+                      onclick="selectEventType('shipment_delivered')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Shipment Delivered
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="email_delivered"
+                      onclick="selectEventType('email_delivered')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Order Delivered Email
+                    </div>
+
+                    <div class="filter-dropdown-section-header">Web Tracking</div>
+                    <div class="filter-dropdown-item" data-filter="all_web" onclick="selectEventType('all_web')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      All Web Tracking
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="page_viewed"
+                      onclick="selectEventType('page_viewed')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Page Viewed
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="product_viewed"
+                      onclick="selectEventType('product_viewed')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Product Viewed
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="collection_viewed"
+                      onclick="selectEventType('collection_viewed')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Collection Viewed
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="cart_viewed"
+                      onclick="selectEventType('cart_viewed')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Cart Viewed
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="added_to_cart"
+                      onclick="selectEventType('added_to_cart')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Added to Cart
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="checkout_started"
+                      onclick="selectEventType('checkout_started')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Checkout Started
+                    </div>
+                    <div class="filter-dropdown-item" data-filter="checkout_completed"
+                      onclick="selectEventType('checkout_completed')">
+                      <div class="filter-multi-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg></div>
+                      Checkout Completed
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Date Range side-by-side -->
+              <div class="filter-field">
+                <label class="filter-field-label">Date Range</label>
+                <div class="filter-date-row">
+                  <div class="date-box">
+                    <input type="text" placeholder="From" id="dateFrom" onfocus="(this.type='date')"
+                      onblur="if(!this.value)this.type='text'">
+                    <div class="date-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg></div>
+                  </div>
+                  <div class="date-box">
+                    <input type="text" placeholder="To" id="dateTo" onfocus="(this.type='date')"
+                      onblur="if(!this.value)this.type='text'">
+                    <div class="date-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="filter-pane-footer">
+              <button class="btn-clear-link" onclick="clearAllFilters()">Clear all</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Details Panel ── -->
+        <div class="details-panel">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4m0-4h.01" />
+            </svg>
+            Details
+          </h3>
+          <div class="detail-name">Armando Christian Perez</div>
+          <div class="detail-subname">Christian Perez</div>
+          <div class="detail-subname" style="margin-bottom:4px">Mando Perez</div>
+          <a class="detail-link" href="#">View all aliases</a>
+
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+            <a href="#">a-m305@gmail.com</a>
+          </div>
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path
+                d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+            </svg>
+            <span>(305) 555-2341</span>
+          </div>
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span>1234 Easy St,<br>New Orleans, LA 70032</span>
+          </div>
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span>4567 Party Ave,<br>New Orleans, LA 70032</span>
+          </div>
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span>305 Biscayne Blv,<br>Miami, FL 33305</span>
+          </div>
+
+          <div class="detail-divider"></div>
+
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+            Purchased products
+          </h3>
+          <div class="product-grid">
+            <div class="product-row">
+              <div class="product-thumb" style="background:#e8f0fe">📦</div>
+              <div class="product-info">
+                <div class="product-name">Sneaker Max - White</div>
+                <div class="product-sku">3412984231906832</div>
+              </div>
+            </div>
+            <div class="product-row">
+              <div class="product-thumb" style="background:#fef3e8">🎧</div>
+              <div class="product-info">
+                <div class="product-name">Graphic tee – Cat</div>
+                <div class="product-sku">4357826539065643</div>
+              </div>
+            </div>
+            <div class="product-row">
+              <div class="product-thumb" style="background:#e8f8ee">⌚</div>
+              <div class="product-info">
+                <div class="product-name">Smart Watch Series X</div>
+                <div class="product-sku">1205367431244384</div>
+              </div>
+            </div>
+            <div class="product-row">
+              <div class="product-thumb" style="background:#f3e8fe">👟</div>
+              <div class="product-info">
+                <div class="product-name">Wireless Earbuds Pro</div>
+                <div class="product-sku">5760438438365435</div>
+              </div>
+            </div>
+            <div class="product-row">
+              <div class="product-thumb" style="background:#fee8f0">🎒</div>
+              <div class="product-info">
+                <div class="product-name">Crossbody - size 8</div>
+                <div class="product-sku">6538065634349764</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleGroup(id) {
+      const el = document.getElementById(id);
+      el.classList.toggle('open');
+    }
+
+    /* ═══ Filter Logic ═══ */
+
+    // Map filter option data-filter values to specific timeline events
+    const FILTER_TO_EVENT_MAP = {
+      // Web tracking filters
+      'all_web': ['web_browsing', 'checkout_started', 'checkout_completed'],
+      'page_viewed': ['web_browsing'],
+      'product_viewed': ['web_browsing'],
+      'collection_viewed': ['web_browsing'],
+      'cart_viewed': ['web_browsing'],
+      'added_to_cart': ['web_browsing'],
+      'checkout_started': ['checkout_started'],
+      'checkout_completed': ['checkout_completed'],
+
+      // OMS filters (Order Management System)
+      'order_placed': ['order_placed'],
+      'order_reprocessed': ['order_reprocessed'],
+      'backorder_released': ['backorder_released'],
+      'shipment_created': ['shipment_created'],
+      'shipment_dispatched': ['shipment_dispatched'],
+      'email_shipped': ['email_shipped'],
+      'email_ofd': ['email_ofd'],
+      'shipment_delivered': ['shipment_delivered'],
+      'email_delivered': ['email_delivered']
+    };
+
+    // All web tracking filter keys
+    const WEB_TRACKING_FILTERS = [
+      'page_viewed', 'product_viewed', 'collection_viewed', 'cart_viewed', 'added_to_cart',
+      'checkout_started', 'checkout_completed'
+    ];
+
+    /* ── Side Pane Toggle ── */
+    function toggleFilterPane() {
+      const pane = document.getElementById('filterSidePane');
+      const btn = document.getElementById('filterToggleBtn');
+      const isOpen = pane.classList.contains('open');
+
+      if (isOpen) {
+        pane.classList.remove('open');
+        btn.classList.remove('active');
+        document.getElementById('eventTypeSelect').classList.remove('active');
+      } else {
+        pane.classList.add('open');
+        btn.classList.add('active');
+      }
+    }
+
+    /* ── Event Type Dropdown ── */
+    function toggleEventTypeDropdown() {
+      document.getElementById('eventTypeSelect').classList.toggle('active');
+    }
+
+    function selectEventType(filter) {
+      const items = document.querySelectorAll('.filter-dropdown-item');
+      const clickedItem = document.querySelector(`.filter-dropdown-item[data-filter="${filter}"]`);
+
+      if (filter === 'all') {
+        // If selecting all, unselect others
+        const isAlreadySelected = clickedItem.classList.contains('selected');
+        if (!isAlreadySelected) {
+          items.forEach(item => item.classList.remove('selected'));
+          clickedItem.classList.add('selected');
+        }
+      } else {
+        // Selecting specific item
+        document.querySelector('.filter-dropdown-item[data-filter="all"]').classList.remove('selected');
+        clickedItem.classList.toggle('selected');
+
+        // If nothing selected, revert to all
+        const anySelected = Array.from(items).some(item => item.classList.contains('selected'));
+        if (!anySelected) {
+          document.querySelector('.filter-dropdown-item[data-filter="all"]').classList.add('selected');
+        }
+      }
+
+      updateSelectedLabel();
+      applyFilters();
+    }
+
+    function updateSelectedLabel() {
+      const selected = document.querySelectorAll('.filter-dropdown-item.selected');
+      const label = document.getElementById('selectedEventTypeLabel');
+
+      if (selected.length === 1) {
+        label.textContent = selected[0].innerText.trim();
+      } else if (selected.length > 1) {
+        label.textContent = `${selected.length} Selected`;
+      } else {
+        label.textContent = 'All Events';
+      }
+    }
+
+    /* ── Clear All Filters ── */
+    function clearAllFilters() {
+      document.querySelectorAll('.filter-dropdown-item').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      document.querySelector('.filter-dropdown-item[data-filter="all"]').classList.add('selected');
+
+      document.getElementById('dateFrom').value = '';
+      document.getElementById('dateTo').value = '';
+
+      updateSelectedLabel();
+      applyFilters();
+    }
+
+    /* ── Apply Filters ── */
+    function applyFilters() {
+      const selectedItems = Array.from(document.querySelectorAll('.filter-dropdown-item.selected'))
+        .map(el => el.dataset.filter);
+
+      const isAll = selectedItems.includes('all');
+
+      // Date range
+      const dateFromVal = document.getElementById('dateFrom').value;
+      const dateToVal = document.getElementById('dateTo').value;
+      const hasDateFilter = dateFromVal || dateToVal;
+      const dateFrom = dateFromVal ? new Date(dateFromVal + 'T00:00:00') : null;
+      const dateTo = dateToVal ? new Date(dateToVal + 'T23:59:59') : null;
+
+      // Get all filterable elements
+      const allEvents = document.querySelectorAll('[data-event-type]');
+
+      allEvents.forEach(el => {
+        const eventType = el.dataset.eventType;
+        const eventDateStr = el.dataset.eventDate;
+        let showByType = true;
+        let showByDate = true;
+
+        // Type filtering
+        if (!isAll) {
+          showByType = false;
+
+          // Check each selected filter to see if it allows this event
+          selectedItems.forEach(filterKey => {
+            const allowedTypes = FILTER_TO_EVENT_MAP[filterKey];
+            if (allowedTypes && allowedTypes.includes(eventType)) {
+              showByType = true;
+            }
+          });
+        }
+
+        // Date filtering
+        if (hasDateFilter && eventDateStr) {
+          const eventDate = new Date(eventDateStr + 'T12:00:00');
+          if (dateFrom && eventDate < dateFrom) showByDate = false;
+          if (dateTo && eventDate > dateTo) showByDate = false;
+        }
+
+        el.style.display = (showByType && showByDate) ? '' : 'none';
+      });
+
+      // Hide day groups that have no visible events
+      document.querySelectorAll('.day-group').forEach(dayGroup => {
+        const visibleEvents = dayGroup.querySelectorAll('[data-event-type]');
+        const anyVisible = Array.from(visibleEvents).some(el => el.style.display !== 'none');
+        dayGroup.style.display = anyVisible ? '' : 'none';
+      });
+
+      // Update button badge
+      const badge = document.getElementById('filterCountBadge');
+      const btn = document.getElementById('filterToggleBtn');
+      const filtersApplied = !isAll || hasDateFilter;
+
+      if (filtersApplied) {
+        badge.textContent = filtersApplied ? '•' : '';
+        badge.style.display = 'inline-flex';
+        btn.classList.add('active');
+      } else {
+        badge.style.display = 'none';
+        btn.classList.remove('active');
+      }
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (e) {
+      const wrapper = document.getElementById('eventTypeSelect');
+      if (wrapper && !wrapper.contains(e.target)) {
+        wrapper.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+
+</html>
